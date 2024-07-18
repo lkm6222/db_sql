@@ -53,6 +53,8 @@ WHERE school.school_area = '중구';
 
 
 /* 중구에 있는 고등학교 학생들 중 평균성적이 80점 미만인 학생 정보를 출력하시오. */
+
+/* ============= having 사용 =======================*/
 SELECT student.student_name,
 		student.student_grade,
         school.school_name,
@@ -76,5 +78,23 @@ INNER JOIN tb_school_info school
 ON student.school_idx = school.school_idx
 WHERE school.school_area = '중구'
 GROUP BY student.student_id
-HAVING AVG(score.score_point) < 90;
+HAVING AVG(score.score_point) < 80;
+
+
+/*------------------------------------------------*/
+SELECT  T.*,
+		T.avgPoint
+FROM (SELECT student.student_name,
+		student.student_grade,
+        school.school_name,
+        school.school_area,
+        AVG(score.score_point) AS avgPoint
+FROM tb_student_info_test student
+INNER JOIN tb_score score
+ON student.student_id = score.student_id
+INNER JOIN tb_school_info school
+ON student.school_idx = school.school_idx
+WHERE school.school_area = '중구'
+GROUP BY student.student_id) T
+WHERE T.avgPoint < 80 ;
 
